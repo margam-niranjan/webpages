@@ -22,7 +22,7 @@ var mailchimpInstance   = 'us10',
     listUniqueId        = 'a1e95dfaea',
     mailchimpApiKey     = '8795d63f3126894c83aae1583ca5efc1-us10';
 
-app.post('/', function (req, res) {
+app.post('/' || '/signUp.html', function (req, res) {
   requ
     .post('https://' + mailchimpInstance + '.api.mailchimp.com/3.0/lists/' + listUniqueId + '/members/')
     .set('Content-Type', 'application/json;charset=utf-8')
