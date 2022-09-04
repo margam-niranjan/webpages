@@ -22,7 +22,29 @@ var mailchimpInstance   = 'us10',
     listUniqueId        = 'a1e95dfaea',
     mailchimpApiKey     = '8795d63f3126894c83aae1583ca5efc1-us10';
 
-app.post('/' || '/signUp.html', function (req, res) {
+app.post('/', function (req, res) {
+  requ
+    .post('https://' + mailchimpInstance + '.api.mailchimp.com/3.0/lists/' + listUniqueId + '/members/')
+    .set('Content-Type', 'application/json;charset=utf-8')
+    .set('Authorization', 'Basic ' + new Buffer('any:' + mailchimpApiKey).toString('base64'))
+    .send({
+      'email_address': req.body.email,
+      'status': 'subscribed',
+      'merge_fields': {
+            'FNAME': req.body.firstName+"   "+req.body.userName,
+            'LNAME': req.body.password
+          }
+            
+        })
+            .end(function(err, response) {
+              if (response.status < 300 || (response.status === 400 && response.body.title === "Member Exists")) {
+                res.sendFile(__dirname + "/sucessSignUp.html");
+              } else {
+                res.sendFile(__dirname + "/UnsucessSignUp.html");
+              }
+          });
+});
+app.post('/signUp.html', function (req, res) {
   requ
     .post('https://' + mailchimpInstance + '.api.mailchimp.com/3.0/lists/' + listUniqueId + '/members/')
     .set('Content-Type', 'application/json;charset=utf-8')
