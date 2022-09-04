@@ -42,8 +42,8 @@ app.post('/', function (req, res) {
           });
 });
 
-app.listen(3000 || process.env.PORT , function () {
-    console.log("started 3000");
+app.listen(process.env.PORT || 3000, function () {
+    console.log(this.address().port);
 });
 
 //8795d63f3126894c83aae1583ca5efc1-us10
