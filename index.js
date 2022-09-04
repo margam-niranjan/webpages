@@ -14,9 +14,7 @@ app.use(express.static('views'));
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/signUp.html"); 
 });
-app.listen(3000 || process.env.PORT , function () {
-    console.log("started 3000");
-});
+
 var mailchimpInstance   = 'us10',
     listUniqueId        = 'a1e95dfaea',
     mailchimpApiKey     = '8795d63f3126894c83aae1583ca5efc1-us10';
@@ -42,6 +40,10 @@ app.post('/', function (req, res) {
                 res.sendFile(__dirname + "/UnsucessSignUp.html");
               }
           });
+});
+
+app.listen(3000 || process.env.PORT , function () {
+    console.log("started 3000");
 });
 
 //8795d63f3126894c83aae1583ca5efc1-us10
