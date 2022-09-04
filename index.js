@@ -11,7 +11,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(express.static('views'));
 
-app.get("/"||"/signUp.html", function (req, res) {
+app.get("/", function (req, res) {
+    res.sendFile(__dirname + "/signUp.html"); 
+});
+app.get("/signUp.html", function (req, res) {
     res.sendFile(__dirname + "/signUp.html"); 
 });
 
