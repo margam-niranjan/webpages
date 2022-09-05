@@ -290,3 +290,9 @@ input[type="submit"]:hover {
 .aggrement a:hover{
     text-decoration: underline;
 }
+
+
+
+small{
+    width:20%
+}
