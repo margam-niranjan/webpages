@@ -5,7 +5,11 @@ const router = express.Router();
 const request = require("request");
 var requ = require('superagent');
 const bodyParser = require("body-parser");
+require("dotenv").config();
 const app = express();
+console.log(process.env.LIST_ID);
+
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -18,47 +22,30 @@ app.get("/signUp.html", function (req, res) {
     res.sendFile(__dirname + "/signUp.html"); 
 });
 
-var mailchimpInstance   = 'us10',
-    listUniqueId        = 'a1e95dfaea',
-    mailchimpApiKey     = '8795d63f3126894c83aae1583ca5efc1-us10';
+
+var mailchimpInstance = 'us10',
+    listUniqueId = process.env.LIST_ID,
+    mailchimpApiKey     = process.env.API_KEY;
 
 app.post('/', function (req, res) {
   requ
     .post('https://' + mailchimpInstance + '.api.mailchimp.com/3.0/lists/' + listUniqueId + '/members/')
     .set('Content-Type', 'application/json;charset=utf-8')
-    .set('Authorization', 'Basic ' + new Buffer('any:' + mailchimpApiKey).toString('base64'))
+    .set('Authorization', 'Basic ' + Buffer.from('any:' + mailchimpApiKey).toString('base64'))
     .send({
-      'email_address': req.body.email,
-      'status': 'subscribed',
       'merge_fields': {
             'FNAME': req.body.firstName+"   "+req.body.userName,
             'LNAME': req.body.password
-          }
-            
-        })
-            .end(function(err, response) {
-              if (response.status < 300 || (response.status === 400 && response.body.title === "Member Exists")) {
-                res.sendFile(__dirname + "/sucessSignUp.html");
-              } else {
-                res.sendFile(__dirname + "/UnsucessSignUp.html");
-              }
-          });
-});
-app.post('/signUp.html', function (req, res) {
-  requ
-    .post('https://' + mailchimpInstance + '.api.mailchimp.com/3.0/lists/' + listUniqueId + '/members/')
-    .set('Content-Type', 'application/json;charset=utf-8')
-    .set('Authorization', 'Basic ' + new Buffer('any:' + mailchimpApiKey).toString('base64'))
-    .send({
+          },
       'email_address': req.body.email,
-      'status': 'subscribed',
-      'merge_fields': {
-            'FNAME': req.body.firstName+"   "+req.body.userName,
-            'LNAME': req.body.password
-          }
+      'status': 'subscribed'
+      
             
-        })
-            .end(function(err, response) {
+    })
+    
+    
+    .end(function (err, response) {
+      console.log(response.status);
               if (response.status < 300 || (response.status === 400 && response.body.title === "Member Exists")) {
                 res.sendFile(__dirname + "/sucessSignUp.html");
               } else {
@@ -69,6 +56,7 @@ app.post('/signUp.html', function (req, res) {
 app.get("/index.html", function (req, res) {
     res.sendFile(__dirname + "/index.html"); 
 });
+
 
 app.listen(process.env.PORT || 3000, function () {
     console.log(this.address().port);
