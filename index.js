@@ -7,7 +7,6 @@ var requ = require('superagent');
 const bodyParser = require("body-parser");
 require("dotenv").config();
 const app = express();
-console.log(process.env.LIST_ID);
 
 
 app.use(bodyParser.json());
@@ -61,6 +60,3 @@ app.get("/index.html", function (req, res) {
 app.listen(process.env.PORT || 3000, function () {
     console.log(this.address().port);
 });
-
-//8795d63f3126894c83aae1583ca5efc1-us10
-//a1e95dfaea
